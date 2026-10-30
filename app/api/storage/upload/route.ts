@@ -57,6 +57,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const ALLOWED_MIME_TYPES = new Set(["image/jpeg", "image/jpg", "image/png", "image/webp"]);
+    if (!ALLOWED_MIME_TYPES.has(mimeType.toLowerCase())) {
+      return NextResponse.json(
+        { error: "UNSUPPORTED_TYPE", message: "Only JPG, PNG, and WebP images can be uploaded." },
+        { status: 400 }
+      );
+    }
+
     if (buffer.length > 5 * 1024 * 1024) {
       return NextResponse.json(
         { error: "FILE_TOO_LARGE", message: "File exceeds 5 MB limit." },

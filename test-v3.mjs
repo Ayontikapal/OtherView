@@ -186,7 +186,7 @@ async function runTestSuite() {
     );
 
     // 3. User B attempts to mutate/update User A's record
-    function authorizeUpdate(inspection, requestingUser, payload) {
+    function authorizeUpdate(inspection, requestingUser) {
       if (inspection.userId !== requestingUser.id) {
         return { success: false, status: 403, error: "FORBIDDEN" };
       }

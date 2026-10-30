@@ -171,7 +171,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col bg-stone-50 text-stone-900 selection:bg-indigo-500 selection:text-white">
       <AppHeader />
 
-      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+      <main id="main-content" className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
         <Suspense
           fallback={
             <div className="w-full max-w-md mx-auto bg-white rounded-3xl border border-stone-200 p-8 text-center space-y-3">

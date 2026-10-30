@@ -283,6 +283,19 @@ export function AppHeader({
               </Link>
             );
           })}
+          {!hasAnalysis && (
+            <Link
+              href="/inspect?demo=true"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onLoadDemo?.();
+              }}
+              className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200/80"
+            >
+              <Sparkles className="w-4 h-4 text-indigo-600" />
+              <span>Sample Demo Walkthrough</span>
+            </Link>
+          )}
 
           <div className="border-t border-stone-200 pt-2">
             {user ? (

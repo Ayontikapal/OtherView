@@ -217,7 +217,11 @@ function InspectContent() {
             initialActionItems={loadedInspection?.actionItems}
             initialAfterImageUrl={loadedInspection?.afterImageUrl}
             initialReassessment={loadedInspection?.reassessment}
-            initialTab={tabParam === "comparison" ? "comparison" : "findings"}
+            initialTab={
+              tabParam === "comparison" || tabParam === "action_plan" || tabParam === "notes"
+                ? tabParam
+                : "findings"
+            }
           />
         ) : (
           /* Upload / Empty Workspace */

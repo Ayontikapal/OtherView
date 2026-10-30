@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <div className="min-h-screen bg-stone-50 flex flex-col text-stone-900">
       <AppHeader />
-      <main className="flex-1 flex items-center justify-center p-6">
+      <main id="main-content" className="flex-1 flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-white rounded-2xl border border-stone-200 p-8 shadow-sm text-center">
           <div className="w-14 h-14 mx-auto rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 mb-5">
             <Eye className="w-7 h-7" />
