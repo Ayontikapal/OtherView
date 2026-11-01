@@ -106,7 +106,7 @@ export async function getInspectionFromDB(id: string): Promise<SavedInspection |
 /**
  * Retrieve all saved inspections, sorted with newest first
  */
-export async function getAllInspectionsFromDB(): Promise<SavedInspection[]> {
+export async function getAllInspectionsFromDB(userId?: string): Promise<SavedInspection[]> {
   const db = await openDB();
   return new Promise((resolve, reject) => {
     try {
@@ -115,7 +115,10 @@ export async function getAllInspectionsFromDB(): Promise<SavedInspection[]> {
       const request = store.getAll();
 
       request.onsuccess = () => {
-        const results: SavedInspection[] = request.result || [];
+        let results: SavedInspection[] = request.result || [];
+        if (userId) {
+          results = results.filter((r) => r.userId === userId || r.isDemo);
+        }
         // Sort descending by updatedAt
         results.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
         resolve(results);

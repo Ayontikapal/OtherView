@@ -1,32 +1,18 @@
 import { NextResponse } from "next/server";
-import { getAuthenticatedUser } from "@/lib/appwrite/server";
-import { isAppwriteConfigured } from "@/lib/appwrite/config";
+import { getUnifiedUser } from "@/lib/auth/unified-auth";
 
 export async function GET() {
-  const configured = isAppwriteConfigured();
-
-  if (!configured) {
-    return NextResponse.json({
-      user: null,
-      isConfigured: false,
-    });
-  }
-
-  const user = await getAuthenticatedUser();
-
-  if (!user) {
-    return NextResponse.json({
-      user: null,
-      isConfigured: true,
-    });
-  }
+  const user = await getUnifiedUser();
 
   return NextResponse.json({
-    user: {
-      $id: user.$id,
-      email: user.email,
-      name: user.name,
-    },
+    user: user
+      ? {
+          $id: user.$id,
+          email: user.email,
+          name: user.name,
+          source: user.source,
+        }
+      : null,
     isConfigured: true,
   });
 }

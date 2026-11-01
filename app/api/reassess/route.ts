@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { reassessmentAnalysisSchema } from "@/lib/validation/analysis-schema";
 import { REASSESSMENT_SYSTEM_PROMPT, REASSESSMENT_USER_PROMPT } from "@/lib/ai/prompts-reassess";
+import { getUnifiedUser } from "@/lib/auth/unified-auth";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
@@ -49,6 +50,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "CORRUPTED_IMAGE", message: "One or both images have invalid image headers." },
         { status: 400 }
+      );
+    }
+
+    // Server-side Authentication Enforcement
+    const user = await getUnifiedUser();
+    if (!user) {
+      return NextResponse.json(
+        {
+          error: "AUTH_REQUIRED",
+          message: "Authentication is required to run reassessment. Please sign in or create an account.",
+          requiresAuth: true,
+        },
+        { status: 401 }
       );
     }
 

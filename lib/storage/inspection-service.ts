@@ -117,7 +117,8 @@ export class InspectionService {
    * Retrieve all saved inspections
    */
   static async getAllInspections(
-    isAuthenticated: boolean
+    isAuthenticated: boolean,
+    userId?: string
   ): Promise<{ inspections: SavedInspection[]; source: StorageSource; hasLocalOnly?: boolean }> {
     let cloudList: SavedInspection[] = [];
     let localList: SavedInspection[] = [];
@@ -125,7 +126,7 @@ export class InspectionService {
     // Read local list
     if (isIndexedDBAvailable()) {
       try {
-        localList = await getAllInspectionsFromDB();
+        localList = await getAllInspectionsFromDB(userId);
       } catch {
         localList = [];
       }

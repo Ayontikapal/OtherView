@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createSessionClient, clearSessionCookie } from "@/lib/appwrite/server";
+import { clearLocalSessionCookie } from "@/lib/auth/unified-auth";
 
 export async function POST() {
   try {
@@ -13,12 +14,14 @@ export async function POST() {
     }
 
     await clearSessionCookie();
+    await clearLocalSessionCookie();
 
     return NextResponse.json({ success: true, message: "Signed out successfully." });
   } catch (error: unknown) {
     const err = error instanceof Error ? error : new Error(String(error));
     console.error("Signout error:", err.message);
     await clearSessionCookie();
+    await clearLocalSessionCookie();
     return NextResponse.json({ success: true, message: "Session cleared." });
   }
 }

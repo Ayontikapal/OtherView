@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { analyzeAccessibilityImage } from "@/lib/ai/analyze-image";
+import { getUnifiedUser } from "@/lib/auth/unified-auth";
 
 export const runtime = "nodejs";
 export const maxDuration = 60; // Next.js serverless route timeout
@@ -167,6 +168,20 @@ export async function POST(request: NextRequest) {
             "File header does not match a valid JPG, PNG, or WebP image. Please check the file.",
         },
         { status: 400 }
+      );
+    }
+
+    // Server-side Authentication Enforcement
+    const user = await getUnifiedUser();
+    if (!user) {
+      return NextResponse.json(
+        {
+          error: "AUTH_REQUIRED",
+          message:
+            "Authentication is required to analyze a space photograph. Please sign in or create an account to start your accessibility review.",
+          requiresAuth: true,
+        },
+        { status: 401 }
       );
     }
 

@@ -44,7 +44,7 @@ export function AppHeader({
     async function loadCount() {
       if (!isIndexedDBAvailable()) return;
       try {
-        const list = await getAllInspectionsFromDB();
+        const list = await getAllInspectionsFromDB(user?.$id);
         if (isMounted) setSavedCount(list.length);
       } catch {
         // IDB unavailable
@@ -54,7 +54,7 @@ export function AppHeader({
     return () => {
       isMounted = false;
     };
-  }, [pathname]);
+  }, [pathname, user]);
 
   const navLinks = [
     { href: "/inspect", label: "Inspect", icon: Compass },
@@ -67,31 +67,31 @@ export function AppHeader({
   ];
 
   return (
-    <header className="border-b border-stone-200/80 bg-white/95 backdrop-blur-md sticky top-0 z-40 transition-colors">
+    <header className="border-b border-[#c3b8e3]/15 bg-[#141221]/90 backdrop-blur-md sticky top-0 z-40 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
         {/* Brand */}
         <div className="flex items-center space-x-6">
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-700 flex items-center justify-center text-white shadow-sm ring-1 ring-black/5 group-hover:scale-105 transition-transform">
-              <Eye className="w-5 h-5 text-indigo-100" />
+            <div className="w-10 h-10 rounded-xl bg-[#1e1a33] border border-[#e85d63]/30 flex items-center justify-center text-[#e85d63] shadow-md group-hover:scale-105 transition-transform">
+              <Eye className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-semibold text-xl tracking-tight text-stone-900">
+                <span className="font-bold text-xl tracking-tight text-[#fdf9f4]">
                   OtherView
                 </span>
-                <span className="px-2 py-0.5 text-[11px] font-medium bg-indigo-50 text-indigo-700 rounded-full border border-indigo-200/80">
-                  v3.0
+                <span className="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider font-semibold bg-[#e85d63]/10 text-[#e85d63] rounded-full border border-[#e85d63]/30">
+                  AI Review
                 </span>
               </div>
-              <p className="text-xs text-stone-500 hidden sm:block">
+              <p className="text-xs text-[#a9a1c6] hidden sm:block">
                 See the space differently. Design for more people.
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-1 pl-4 border-l border-stone-200">
+          <nav className="hidden md:flex items-center space-x-1 pl-4 border-l border-[#c3b8e3]/15">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
@@ -99,16 +99,16 @@ export function AppHeader({
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
                     isActive
-                      ? "bg-indigo-50 text-indigo-700"
-                      : "text-stone-600 hover:text-stone-900 hover:bg-stone-50"
+                      ? "bg-[#1e1a33] text-[#fdf9f4] border border-[#c3b8e3]/30"
+                      : "text-[#a9a1c6] hover:text-[#fdf9f4] hover:bg-[#1e1a33]/50"
                   }`}
                 >
-                  <Icon className="w-3.5 h-3.5" />
+                  <Icon className="w-3.5 h-3.5 text-[#e85d63]" />
                   <span>{link.label}</span>
                   {link.badge !== undefined && (
-                    <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-stone-200 text-stone-700 font-bold">
+                    <span className="ml-1 px-1.5 py-0.2 rounded-full text-[10px] bg-[#141221] text-[#c3b8e3] border border-[#c3b8e3]/20 font-mono font-bold">
                       {link.badge}
                     </span>
                   )}
@@ -121,8 +121,8 @@ export function AppHeader({
         {/* Right Actions */}
         <div className="flex items-center gap-2 sm:gap-3">
           {isDemo && (
-            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-amber-800 bg-amber-50 border border-amber-200/70 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono font-semibold text-[#eca541] bg-[#eca541]/10 border border-[#eca541]/30 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-[#eca541] animate-pulse" />
               <span>Demo Mode</span>
             </div>
           )}
@@ -131,28 +131,28 @@ export function AppHeader({
             <button
               type="button"
               onClick={onReset}
-              className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-stone-700 bg-stone-100 hover:bg-stone-200 border border-stone-200 rounded-lg transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-[#fdf9f4] bg-[#1e1a33] hover:bg-[#282343] border border-[#c3b8e3]/20 rounded-xl transition-colors cursor-pointer"
               aria-label="Start a new accessibility analysis"
             >
-              <RotateCcw className="w-3.5 h-3.5 text-stone-500" />
+              <RotateCcw className="w-3.5 h-3.5 text-[#a9a1c6]" />
               <span>New Analysis</span>
             </button>
           ) : onLoadDemo ? (
             <button
               type="button"
               onClick={onLoadDemo}
-              className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 active:bg-indigo-200 border border-indigo-200/80 rounded-lg transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-[#eca541] bg-[#1e1a33] hover:bg-[#282343] border border-[#eca541]/30 rounded-xl transition-colors cursor-pointer"
               aria-label="Load pre-analyzed demo entrance photograph"
             >
-              <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+              <Sparkles className="w-3.5 h-3.5 text-[#eca541]" />
               <span>Sample Demo</span>
             </button>
           ) : (
             <Link
               href="/inspect?demo=true"
-              className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg transition-colors"
+              className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-[#eca541] bg-[#1e1a33] hover:bg-[#282343] border border-[#eca541]/30 rounded-xl transition-colors"
             >
-              <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+              <Sparkles className="w-3.5 h-3.5 text-[#eca541]" />
               <span>Sample Demo</span>
             </Link>
           )}
@@ -164,49 +164,49 @@ export function AppHeader({
                 <button
                   type="button"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="inline-flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 transition-colors text-xs font-medium text-stone-700 cursor-pointer"
+                  className="inline-flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl border border-[#c3b8e3]/20 bg-[#1e1a33] hover:bg-[#282343] transition-colors text-xs font-medium text-[#fdf9f4] cursor-pointer"
                   aria-expanded={userDropdownOpen}
                 >
-                  <div className="w-6 h-6 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-[11px] font-bold">
+                  <div className="w-6 h-6 rounded-lg bg-[#e85d63] text-[#141221] flex items-center justify-center text-[11px] font-bold">
                     {user.name ? user.name[0].toUpperCase() : user.email[0].toUpperCase()}
                   </div>
                   <span className="hidden sm:inline max-w-[120px] truncate font-semibold">
                     {user.name || user.email.split("@")[0]}
                   </span>
-                  <ChevronDown className="w-3.5 h-3.5 text-stone-400" />
+                  <ChevronDown className="w-3.5 h-3.5 text-[#a9a1c6]" />
                 </button>
 
                 {userDropdownOpen && (
                   <div
-                    className="absolute right-0 mt-2 w-56 rounded-2xl bg-white border border-stone-200 shadow-lg py-2 z-50 animate-in fade-in slide-in-from-top-2"
+                    className="absolute right-0 mt-2 w-56 rounded-2xl bg-[#1e1a33] border border-[#c3b8e3]/20 shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2"
                     onMouseLeave={() => setUserDropdownOpen(false)}
                   >
-                    <div className="px-4 py-2 border-b border-stone-100">
-                      <p className="text-xs font-semibold text-stone-900 truncate">
+                    <div className="px-4 py-2 border-b border-[#c3b8e3]/10">
+                      <p className="text-xs font-bold text-[#fdf9f4] truncate">
                         {user.name || "Authenticated User"}
                       </p>
-                      <p className="text-[11px] text-stone-500 truncate">{user.email}</p>
+                      <p className="text-[11px] text-[#a9a1c6] truncate">{user.email}</p>
                     </div>
 
                     <Link
                       href="/inspections"
                       onClick={() => setUserDropdownOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2 text-xs text-stone-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 text-xs text-[#a9a1c6] hover:text-[#fdf9f4] hover:bg-[#141221] transition-colors"
                     >
-                      <Bookmark className="w-3.5 h-3.5" />
-                      <span>My Cloud Inspections</span>
+                      <Bookmark className="w-3.5 h-3.5 text-[#e85d63]" />
+                      <span>My Inspections</span>
                     </Link>
 
                     <Link
                       href="/inspect"
                       onClick={() => setUserDropdownOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2 text-xs text-stone-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 text-xs text-[#a9a1c6] hover:text-[#fdf9f4] hover:bg-[#141221] transition-colors"
                     >
-                      <Compass className="w-3.5 h-3.5" />
+                      <Compass className="w-3.5 h-3.5 text-[#6ee7b7]" />
                       <span>New Space Inspection</span>
                     </Link>
 
-                    <div className="border-t border-stone-100 my-1" />
+                    <div className="border-t border-[#c3b8e3]/10 my-1" />
 
                     <button
                       type="button"
@@ -214,7 +214,7 @@ export function AppHeader({
                         setUserDropdownOpen(false);
                         signOut();
                       }}
-                      className="w-full flex items-center gap-2 px-4 py-2 text-xs text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer text-left"
+                      className="w-full flex items-center gap-2 px-4 py-2 text-xs text-[#e85d63] hover:bg-[#e85d63]/10 transition-colors cursor-pointer text-left"
                     >
                       <LogOut className="w-3.5 h-3.5" />
                       <span>Sign Out</span>
@@ -226,14 +226,14 @@ export function AppHeader({
               <div className="flex items-center gap-1.5">
                 <Link
                   href={`/login?redirect=${encodeURIComponent(pathname)}`}
-                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-stone-700 hover:text-stone-900 hover:bg-stone-100 rounded-lg transition-colors"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-[#a9a1c6] hover:text-[#fdf9f4] hover:bg-[#1e1a33] rounded-xl transition-colors"
                 >
                   <LogIn className="w-3.5 h-3.5" />
                   <span>Sign In</span>
                 </Link>
                 <Link
                   href={`/signup?redirect=${encodeURIComponent(pathname)}`}
-                  className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-2xs transition-colors"
+                  className="inline-flex items-center gap-1 px-3.5 py-1.5 text-xs font-bold text-[#141221] bg-[#e85d63] hover:bg-[#d64b51] rounded-xl shadow-md transition-colors"
                 >
                   <UserIcon className="w-3.5 h-3.5" />
                   <span>Sign Up</span>
@@ -246,7 +246,7 @@ export function AppHeader({
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg"
+            className="md:hidden p-2 text-[#a9a1c6] hover:text-[#fdf9f4] hover:bg-[#1e1a33] rounded-xl"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -256,7 +256,7 @@ export function AppHeader({
 
       {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-stone-200 bg-white px-4 py-3 space-y-2 animate-in slide-in-from-top-2">
+        <div className="md:hidden border-t border-[#c3b8e3]/15 bg-[#141221] px-4 py-3 space-y-2 animate-in slide-in-from-top-2">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href;
@@ -267,16 +267,16 @@ export function AppHeader({
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold ${
                   isActive
-                    ? "bg-indigo-50 text-indigo-700"
-                    : "text-stone-700 hover:bg-stone-50"
+                    ? "bg-[#1e1a33] text-[#fdf9f4] border border-[#c3b8e3]/30"
+                    : "text-[#a9a1c6] hover:bg-[#1e1a33]/50"
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-4 h-4 text-[#e85d63]" />
                   <span>{link.label}</span>
                 </div>
                 {link.badge !== undefined && (
-                  <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-stone-200 text-stone-700 font-bold">
+                  <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-[#1e1a33] text-[#c3b8e3] border border-[#c3b8e3]/20 font-mono font-bold">
                     {link.badge}
                   </span>
                 )}
@@ -290,17 +290,17 @@ export function AppHeader({
                 setMobileMenuOpen(false);
                 onLoadDemo?.();
               }}
-              className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200/80"
+              className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-[#eca541] bg-[#eca541]/10 border border-[#eca541]/30"
             >
-              <Sparkles className="w-4 h-4 text-indigo-600" />
+              <Sparkles className="w-4 h-4 text-[#eca541]" />
               <span>Sample Demo Walkthrough</span>
             </Link>
           )}
 
-          <div className="border-t border-stone-200 pt-2">
+          <div className="border-t border-[#c3b8e3]/15 pt-2">
             {user ? (
               <div className="flex items-center justify-between px-3 py-2">
-                <span className="text-xs font-medium text-stone-700 truncate">
+                <span className="text-xs font-medium text-[#fdf9f4] truncate">
                   {user.name || user.email}
                 </span>
                 <button
@@ -309,7 +309,7 @@ export function AppHeader({
                     setMobileMenuOpen(false);
                     signOut();
                   }}
-                  className="text-xs text-rose-600 font-semibold"
+                  className="text-xs text-[#e85d63] font-semibold"
                 >
                   Sign Out
                 </button>
@@ -319,14 +319,14 @@ export function AppHeader({
                 <Link
                   href="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-1/2 py-2 text-center text-xs font-semibold text-stone-700 bg-stone-100 rounded-xl"
+                  className="w-1/2 py-2 text-center text-xs font-semibold text-[#fdf9f4] bg-[#1e1a33] rounded-xl border border-[#c3b8e3]/20"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/signup"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-1/2 py-2 text-center text-xs font-semibold text-white bg-indigo-600 rounded-xl"
+                  className="w-1/2 py-2 text-center text-xs font-bold text-[#141221] bg-[#e85d63] rounded-xl shadow-md"
                 >
                   Sign Up
                 </Link>

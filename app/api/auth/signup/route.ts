@@ -1,26 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ID } from "node-appwrite";
-import { Client, Account } from "node-appwrite";
+import { ID, Client, Account } from "node-appwrite";
 import { APPWRITE_CONFIG, isAppwriteConfigured } from "@/lib/appwrite/config";
 import { setSessionCookie } from "@/lib/appwrite/server";
+import { setLocalSessionCookie } from "@/lib/auth/unified-auth";
+import crypto from "crypto";
 
 export async function POST(request: NextRequest) {
   try {
-    if (!isAppwriteConfigured()) {
-      return NextResponse.json(
-        {
-          error: "APPWRITE_NOT_CONFIGURED",
-          message:
-            "Appwrite Cloud project is not configured. Please add NEXT_PUBLIC_APPWRITE_ENDPOINT and NEXT_PUBLIC_APPWRITE_PROJECT_ID to your environment variables.",
-        },
-        { status: 503 }
-      );
-    }
-
     const body = await request.json();
     const { email, password, name } = body;
 
-    if (!email || typeof email !== "string" || !email.includes("@")) {
+    const cleanEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!cleanEmail || !emailRegex.test(cleanEmail)) {
       return NextResponse.json(
         { error: "INVALID_EMAIL", message: "A valid email address is required." },
         { status: 400 }
@@ -37,31 +29,57 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const trimmedName = typeof name === "string" ? name.trim() : "";
+    const trimmedName = typeof name === "string" ? name.trim() : cleanEmail.split("@")[0];
 
-    // Client for unauthenticated user creation
-    const client = new Client()
-      .setEndpoint(APPWRITE_CONFIG.endpoint)
-      .setProject(APPWRITE_CONFIG.projectId);
+    // 1. Try Appwrite if configured
+    if (isAppwriteConfigured()) {
+      try {
+        const client = new Client()
+          .setEndpoint(APPWRITE_CONFIG.endpoint)
+          .setProject(APPWRITE_CONFIG.projectId);
 
-    const account = new Account(client);
+        const account = new Account(client);
+        const userId = ID.unique();
+        const user = await account.create(userId, cleanEmail, password, trimmedName || undefined);
+        const session = await account.createEmailPasswordSession(cleanEmail, password);
 
-    // Create user in Appwrite
-    const userId = ID.unique();
-    const user = await account.create(userId, email.trim(), password, trimmedName || undefined);
+        await setSessionCookie(session.secret, session.expire);
 
-    // Create session
-    const session = await account.createEmailPasswordSession(email.trim(), password);
+        return NextResponse.json({
+          success: true,
+          user: {
+            $id: user.$id,
+            email: user.email,
+            name: user.name,
+          },
+        });
+      } catch (appwriteErr: unknown) {
+        const msg = appwriteErr instanceof Error ? appwriteErr.message : String(appwriteErr);
+        if (msg.toLowerCase().includes("already exists")) {
+          return NextResponse.json(
+            { error: "USER_EXISTS", message: "An account with this email already exists." },
+            { status: 409 }
+          );
+        }
+        console.warn("Appwrite signup failed, creating local session:", msg);
+      }
+    }
 
-    // Set HTTP-only session cookie
-    await setSessionCookie(session.secret, session.expire);
+    // 2. Built-in Local Session Fallback
+    const localUserId = `usr_${crypto.createHash("md5").update(cleanEmail).digest("hex").slice(0, 16)}`;
+
+    await setLocalSessionCookie({
+      id: localUserId,
+      email: cleanEmail,
+      name: trimmedName,
+    });
 
     return NextResponse.json({
       success: true,
       user: {
-        $id: user.$id,
-        email: user.email,
-        name: user.name,
+        $id: localUserId,
+        email: cleanEmail,
+        name: trimmedName,
       },
     });
   } catch (error: unknown) {
@@ -73,7 +91,7 @@ export async function POST(request: NextRequest) {
         error: "SIGNUP_FAILED",
         message: err.message || "Failed to create account. Please check your credentials.",
       },
-      { status: 400 }
+      { status: 500 }
     );
   }
 }

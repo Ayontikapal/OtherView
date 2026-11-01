@@ -88,6 +88,7 @@ export type NoteSaveStatus = "unsaved" | "saving" | "saved" | "error";
 
 export interface SavedInspection {
   id: string;
+  userId?: string;
   title: string;
   createdAt: string;
   updatedAt: string;

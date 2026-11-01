@@ -31,10 +31,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full scroll-smooth">
-      <body className="min-h-full flex flex-col bg-stone-50 text-stone-900 antialiased selection:bg-indigo-500 selection:text-white">
+      <body className="min-h-full flex flex-col bg-[#141221] text-[#fdf9f4] antialiased selection:bg-[#e85d63] selection:text-[#141221]">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-lg font-medium text-sm outline-none"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 px-4 py-2 bg-[#e85d63] text-[#141221] font-bold rounded-lg shadow-lg text-sm outline-none"
         >
           Skip to main content
         </a>

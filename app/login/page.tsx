@@ -5,14 +5,15 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/auth/auth-context";
 import { AppHeader } from "@/components/layout/app-header";
-import { Eye, Lock, Mail, ArrowRight, AlertCircle, Loader2, Sparkles } from "lucide-react";
+import { AppFooter } from "@/components/layout/app-footer";
+import { Eye, Lock, Mail, ArrowRight, AlertCircle, Loader2 } from "lucide-react";
 
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") || "/inspections";
 
-  const { signIn, isConfigured } = useAuth();
+  const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -39,47 +40,27 @@ function LoginForm() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-3xl border border-stone-200/90 p-6 sm:p-8 shadow-sm space-y-6">
+    <div className="w-full max-w-md mx-auto bg-[#1e1a33] rounded-3xl border border-[#c3b8e3]/15 p-6 sm:p-8 shadow-2xl space-y-6">
       <div className="text-center space-y-2">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-700 flex items-center justify-center text-white mx-auto shadow-sm">
-          <Eye className="w-6 h-6 text-indigo-100" />
+        <div className="w-12 h-12 rounded-2xl bg-[#141221] border border-[#e85d63]/30 flex items-center justify-center text-[#e85d63] mx-auto shadow-md">
+          <Eye className="w-6 h-6" />
         </div>
-        <h1 className="text-2xl font-extrabold text-stone-900 tracking-tight">
+        <h1 className="text-2xl font-extrabold text-[#fdf9f4] tracking-tight">
           Sign In to OtherView
         </h1>
-        <p className="text-xs sm:text-sm text-stone-600">
-          Access your saved accessibility inspections, notes, and reassessments across all devices.
+        <p className="text-xs sm:text-sm text-[#a9a1c6]">
+          Access your saved accessibility inspections, notes, and reassessments.
         </p>
       </div>
-
-      {!isConfigured && (
-        <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-xs space-y-1">
-          <p className="font-semibold flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-amber-600" />
-            <span>Appwrite Cloud Not Yet Configured</span>
-          </p>
-          <p className="text-amber-800 leading-relaxed">
-            Configure your Appwrite environment variables in <code className="bg-amber-100 px-1 py-0.5 rounded font-mono">.env.local</code> to enable persistent cloud accounts. You can continue using browser storage (IndexedDB) or test Demo Mode.
-          </p>
-          <div className="pt-1">
-            <Link
-              href="/inspect?demo=true"
-              className="text-indigo-700 hover:text-indigo-900 underline font-semibold"
-            >
-              Explore Sample Entrance in Demo Mode →
-            </Link>
-          </div>
-        </div>
-      )}
 
       {error && (
         <div
           role="alert"
-          className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-900 text-xs flex items-start gap-2.5 animate-in fade-in"
+          className="p-3.5 bg-[#e85d63]/10 border border-[#e85d63]/30 rounded-xl text-[#e85d63] text-xs flex items-start gap-2.5 animate-in fade-in"
         >
-          <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+          <AlertCircle className="w-4 h-4 text-[#e85d63] shrink-0 mt-0.5" />
           <div className="flex-1 leading-relaxed">
-            <span className="font-semibold">Sign in failed: </span>
+            <span className="font-bold">Sign in failed: </span>
             {error}
           </div>
         </div>
@@ -87,11 +68,11 @@ function LoginForm() {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
-          <label htmlFor="email" className="block text-xs font-semibold text-stone-700">
+          <label htmlFor="email" className="block text-xs font-semibold text-[#c3b8e3]">
             Email Address
           </label>
           <div className="relative">
-            <Mail className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Mail className="w-4 h-4 text-[#a9a1c6] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               id="email"
               type="email"
@@ -100,19 +81,19 @@ function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="architect@domain.com"
-              className="w-full pl-10 pr-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-all"
+              className="w-full pl-10 pr-3.5 py-2.5 bg-[#141221] border border-[#c3b8e3]/20 rounded-xl text-xs sm:text-sm text-[#fdf9f4] placeholder-[#a9a1c6]/40 focus:border-[#e85d63] focus:outline-none transition-all"
             />
           </div>
         </div>
 
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label htmlFor="password" className="block text-xs font-semibold text-stone-700">
+            <label htmlFor="password" className="block text-xs font-semibold text-[#c3b8e3]">
               Password
             </label>
           </div>
           <div className="relative">
-            <Lock className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Lock className="w-4 h-4 text-[#a9a1c6] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               id="password"
               type="password"
@@ -121,7 +102,7 @@ function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full pl-10 pr-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition-all"
+              className="w-full pl-10 pr-3.5 py-2.5 bg-[#141221] border border-[#c3b8e3]/20 rounded-xl text-xs sm:text-sm text-[#fdf9f4] placeholder-[#a9a1c6]/40 focus:border-[#e85d63] focus:outline-none transition-all"
             />
           </div>
         </div>
@@ -129,7 +110,7 @@ function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 transition-all shadow-2xs cursor-pointer"
+          className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs sm:text-sm font-bold text-[#141221] bg-[#e85d63] hover:bg-[#d64b51] active:scale-[0.98] disabled:opacity-50 transition-all shadow-md cursor-pointer"
         >
           {loading ? (
             <>
@@ -145,20 +126,20 @@ function LoginForm() {
         </button>
       </form>
 
-      <div className="border-t border-stone-200 pt-4 text-center space-y-2">
-        <p className="text-xs text-stone-600">
+      <div className="border-t border-[#c3b8e3]/10 pt-4 text-center space-y-2">
+        <p className="text-xs text-[#a9a1c6]">
           Don&apos;t have an account yet?{" "}
           <Link
             href={`/signup?redirect=${encodeURIComponent(redirect)}`}
-            className="text-indigo-600 hover:text-indigo-800 font-semibold underline"
+            className="text-[#e85d63] hover:text-[#d64b51] font-semibold underline"
           >
             Create an account
           </Link>
         </p>
-        <p className="text-[11px] text-stone-500">
-          Or continue as guest with{" "}
-          <Link href="/inspect" className="text-stone-700 hover:underline">
-            Browser Local Storage
+        <p className="text-[11px] text-[#a9a1c6]/70">
+          Or explore without account via{" "}
+          <Link href="/inspect?demo=true" className="text-[#eca541] hover:underline">
+            Sample Demonstration Mode
           </Link>
         </p>
       </div>
@@ -168,21 +149,23 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-stone-50 text-stone-900 selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-[#141221] text-[#fdf9f4] relative selection:bg-[#e85d63] selection:text-[#141221]">
       <AppHeader />
 
-      <main id="main-content" className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+      <main id="main-content" className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 relative z-10">
         <Suspense
           fallback={
-            <div className="w-full max-w-md mx-auto bg-white rounded-3xl border border-stone-200 p-8 text-center space-y-3">
-              <Loader2 className="w-6 h-6 text-indigo-600 animate-spin mx-auto" />
-              <p className="text-xs text-stone-500">Loading sign in...</p>
+            <div className="w-full max-w-md mx-auto bg-[#1e1a33] rounded-3xl border border-[#c3b8e3]/15 p-8 text-center space-y-3">
+              <Loader2 className="w-6 h-6 text-[#e85d63] animate-spin mx-auto" />
+              <p className="text-xs text-[#a9a1c6]">Loading sign in...</p>
             </div>
           }
         >
           <LoginForm />
         </Suspense>
       </main>
+
+      <AppFooter />
     </div>
   );
 }

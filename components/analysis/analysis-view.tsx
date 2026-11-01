@@ -154,6 +154,7 @@ export function AnalysisView({
 
     const record: SavedInspection = {
       id: inspectionId,
+      userId: user?.$id,
       title: title.trim() || "Physical Environment Inspection",
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -174,8 +175,8 @@ export function AnalysisView({
         setHasUnsavedChanges(false);
         setSaveRecordFeedback(
           result.source === "cloud"
-            ? "Saved to Appwrite Cloud"
-            : "Saved to browser storage (guest mode)"
+            ? "Saved to Cloud Account"
+            : "Saved to browser storage"
         );
         onInspectionSaved?.(inspectionId);
       } else {
@@ -207,6 +208,7 @@ export function AnalysisView({
       try {
         const record: SavedInspection = {
           id: inspectionId,
+          userId: user?.$id,
           title: title.trim() || "Physical Environment Inspection",
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -359,12 +361,14 @@ export function AnalysisView({
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Top Banner for Demo mode */}
       {isDemo && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-amber-50 border border-amber-200/90 rounded-2xl text-xs sm:text-sm text-amber-900">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-[#eca541]/10 border border-[#eca541]/30 rounded-2xl text-xs sm:text-sm text-[#eca541]">
           <div className="flex items-center gap-2.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse shrink-0" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#eca541] animate-pulse shrink-0" />
             <div>
-              <span className="font-semibold">Demonstration Mode (Sample Data): </span>
-              <span className="text-amber-800">
+              <span className="font-bold uppercase tracking-wider font-mono text-[11px] block sm:inline mr-1">
+                Demonstration Mode:
+              </span>
+              <span className="text-[#fdf9f4]/90">
                 Inspecting a verified baseline review of a public library entrance to evaluate visual grounding, accessibility findings, and before-vs-after comparison offline.
               </span>
             </div>
@@ -372,7 +376,7 @@ export function AnalysisView({
           <button
             type="button"
             onClick={onReset}
-            className="self-start sm:self-center shrink-0 px-3 py-1.5 font-medium text-xs text-amber-900 bg-white hover:bg-amber-100/60 border border-amber-300 rounded-lg transition-colors cursor-pointer"
+            className="self-start sm:self-center shrink-0 px-3.5 py-1.5 font-bold text-xs text-[#141221] bg-[#eca541] hover:bg-[#d69335] rounded-xl transition-all shadow-md cursor-pointer"
           >
             Upload Real Photo
           </button>
@@ -380,7 +384,7 @@ export function AnalysisView({
       )}
 
       {/* Inspection Title & Persistence Bar */}
-      <div className="bg-white rounded-2xl border border-stone-200 p-4 sm:p-5 shadow-2xs space-y-3">
+      <div className="bg-[#1e1a33] rounded-2xl border border-[#c3b8e3]/15 p-4 sm:p-5 shadow-xl space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           {/* Editable Title */}
           <div className="flex items-center gap-2.5 flex-1 max-w-xl">
@@ -403,7 +407,7 @@ export function AnalysisView({
                     }
                   }}
                   autoFocus
-                  className="text-base sm:text-lg font-bold text-stone-900 px-3 py-1.5 border border-indigo-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/20 w-full"
+                  className="text-base sm:text-lg font-bold text-[#fdf9f4] px-3.5 py-1.5 border border-[#e85d63] rounded-xl focus:outline-none bg-[#141221] w-full"
                 />
                 <button
                   type="button"
@@ -411,7 +415,7 @@ export function AnalysisView({
                     setIsEditingTitle(false);
                     if (isSaved) handleSaveInspection();
                   }}
-                  className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg"
+                  className="p-2 text-[#e85d63] hover:bg-[#141221] rounded-lg transition-colors"
                   aria-label="Confirm title"
                 >
                   <Check className="w-4 h-4" />
@@ -419,12 +423,12 @@ export function AnalysisView({
               </div>
             ) : (
               <div className="flex items-center gap-2 group cursor-pointer" onClick={() => setIsEditingTitle(true)}>
-                <h2 className="text-lg sm:text-xl font-bold tracking-tight text-stone-900">
+                <h2 className="text-lg sm:text-xl font-bold tracking-tight text-[#fdf9f4]">
                   {title}
                 </h2>
                 <button
                   type="button"
-                  className="p-1 text-stone-400 group-hover:text-stone-700 rounded-md transition-colors"
+                  className="p-1 text-[#a9a1c6] group-hover:text-[#fdf9f4] rounded-md transition-colors"
                   aria-label="Edit inspection title"
                 >
                   <Edit2 className="w-3.5 h-3.5" />
@@ -440,25 +444,25 @@ export function AnalysisView({
                 <div
                   className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold ${
                     savedSource === "cloud"
-                      ? "bg-indigo-50 text-indigo-700 border border-indigo-200"
-                      : "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                      ? "bg-[#e85d63]/10 text-[#e85d63] border border-[#e85d63]/30"
+                      : "bg-[#6ee7b7]/10 text-[#6ee7b7] border border-[#6ee7b7]/30"
                   }`}
                 >
                   {savedSource === "cloud" ? (
                     <>
-                      <Cloud className="w-3.5 h-3.5 text-indigo-600" />
-                      <span>Saved to Appwrite Cloud</span>
+                      <Cloud className="w-3.5 h-3.5 text-[#e85d63]" />
+                      <span>Saved to Cloud</span>
                     </>
                   ) : (
                     <>
-                      <HardDrive className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Saved to Local Storage</span>
+                      <HardDrive className="w-3.5 h-3.5 text-[#6ee7b7]" />
+                      <span>Saved to Browser Storage</span>
                     </>
                   )}
                 </div>
 
                 {!user && (
-                  <span className="text-[11px] text-stone-500 hidden md:inline">
+                  <span className="text-[11px] text-[#a9a1c6] hidden md:inline">
                     (Sign in to sync across devices)
                   </span>
                 )}
@@ -468,7 +472,7 @@ export function AnalysisView({
                 type="button"
                 onClick={handleSaveInspection}
                 disabled={isSavingRecord}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 rounded-xl transition-all shadow-2xs disabled:opacity-50 cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-[#141221] bg-[#e85d63] hover:bg-[#d64b51] active:scale-[0.98] rounded-xl transition-all shadow-md disabled:opacity-50 cursor-pointer"
               >
                 {isSavingRecord ? (
                   <>
@@ -478,14 +482,14 @@ export function AnalysisView({
                 ) : (
                   <>
                     <Bookmark className="w-3.5 h-3.5" />
-                    <span>{user ? "Save to Appwrite Cloud" : "Save Inspection"}</span>
+                    <span>{user ? "Save to Cloud" : "Save Inspection"}</span>
                   </>
                 )}
               </button>
             )}
 
             {saveRecordFeedback && (
-              <span className="text-xs font-medium text-stone-600 animate-in fade-in">
+              <span className="text-xs font-medium text-[#c3b8e3] animate-in fade-in">
                 {saveRecordFeedback}
               </span>
             )}
@@ -494,21 +498,21 @@ export function AnalysisView({
       </div>
 
       {/* Primary Section Mode Selector & Export Actions */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-stone-200 pb-3">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#c3b8e3]/15 pb-3">
         {/* Navigation Tabs */}
-        <div className="flex flex-wrap items-center gap-2 bg-stone-100 p-1 rounded-xl border border-stone-200/80">
+        <div className="flex flex-wrap items-center gap-1.5 bg-[#1e1a33] p-1.5 rounded-xl border border-[#c3b8e3]/15">
           <button
             type="button"
             onClick={() => setActiveTab("findings")}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === "findings"
-                ? "bg-white text-stone-900 shadow-2xs"
-                : "text-stone-600 hover:text-stone-900"
+                ? "bg-[#141221] text-[#fdf9f4] border border-[#c3b8e3]/30 shadow-md"
+                : "text-[#a9a1c6] hover:text-[#fdf9f4]"
             }`}
           >
-            <Layers className="w-4 h-4 text-indigo-600" />
+            <Layers className="w-4 h-4 text-[#e85d63]" />
             <span>Accessibility Findings</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-stone-200 text-stone-700">
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-[#141221] text-[#c3b8e3] border border-[#c3b8e3]/20 font-mono">
               {analysis.findings.length}
             </span>
           </button>
@@ -518,13 +522,13 @@ export function AnalysisView({
             onClick={() => setActiveTab("action_plan")}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === "action_plan"
-                ? "bg-white text-stone-900 shadow-2xs"
-                : "text-stone-600 hover:text-stone-900"
+                ? "bg-[#141221] text-[#fdf9f4] border border-[#c3b8e3]/30 shadow-md"
+                : "text-[#a9a1c6] hover:text-[#fdf9f4]"
             }`}
           >
-            <ListTodo className="w-4 h-4 text-emerald-600" />
+            <ListTodo className="w-4 h-4 text-[#6ee7b7]" />
             <span>Action Plan Checklist</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-100 text-emerald-800 font-bold">
+            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-[#6ee7b7]/15 text-[#6ee7b7] border border-[#6ee7b7]/30 font-mono font-bold">
               {completedActionsCount}/{actionItems.length}
             </span>
           </button>
@@ -534,14 +538,14 @@ export function AnalysisView({
             onClick={() => setActiveTab("notes")}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === "notes"
-                ? "bg-white text-stone-900 shadow-2xs"
-                : "text-stone-600 hover:text-stone-900"
+                ? "bg-[#141221] text-[#fdf9f4] border border-[#c3b8e3]/30 shadow-md"
+                : "text-[#a9a1c6] hover:text-[#fdf9f4]"
             }`}
           >
-            <FileText className="w-4 h-4 text-indigo-600" />
+            <FileText className="w-4 h-4 text-[#eca541]" />
             <span>Field Notes</span>
             {notes && (
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span className="w-2 h-2 rounded-full bg-[#6ee7b7]" />
             )}
           </button>
 
@@ -550,18 +554,18 @@ export function AnalysisView({
             onClick={() => setActiveTab("comparison")}
             className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
               activeTab === "comparison"
-                ? "bg-white text-stone-900 shadow-2xs"
-                : "text-stone-600 hover:text-stone-900"
+                ? "bg-[#141221] text-[#fdf9f4] border border-[#c3b8e3]/30 shadow-md"
+                : "text-[#a9a1c6] hover:text-[#fdf9f4]"
             }`}
           >
-            <TrendingUp className="w-4 h-4 text-indigo-600" />
+            <TrendingUp className="w-4 h-4 text-[#c3b8e3]" />
             <span>Before vs. After Review</span>
             {reassessmentResult ? (
-              <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-100 text-emerald-800 font-bold">
+              <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-[#6ee7b7]/15 text-[#6ee7b7] border border-[#6ee7b7]/30 font-mono font-bold">
                 {reassessmentResult.improvedCount} Improved
               </span>
             ) : (
-              <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-indigo-100 text-indigo-800 font-bold">
+              <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-[#141221] text-[#c3b8e3] border border-[#c3b8e3]/20 font-mono">
                 Reassess
               </span>
             )}
@@ -573,20 +577,20 @@ export function AnalysisView({
           <button
             type="button"
             onClick={() => setIsReportOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-stone-700 bg-white hover:bg-stone-50 active:bg-stone-100 border border-stone-300 rounded-xl transition-colors shadow-2xs cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-[#fdf9f4] bg-[#141221] hover:bg-[#1e1a33] border border-[#c3b8e3]/25 rounded-xl transition-colors shadow-sm cursor-pointer"
             aria-label="Preview and print review report"
           >
-            <Printer className="w-3.5 h-3.5 text-stone-500" />
+            <Printer className="w-3.5 h-3.5 text-[#c3b8e3]" />
             <span>Export Report / Print</span>
           </button>
 
           <button
             type="button"
             onClick={onReset}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium text-stone-600 hover:text-stone-900 bg-stone-100 hover:bg-stone-200/70 rounded-xl transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium text-[#a9a1c6] hover:text-[#fdf9f4] bg-[#141221] hover:bg-[#1e1a33] border border-[#c3b8e3]/15 rounded-xl transition-colors cursor-pointer"
             aria-label="Analyze another space photograph"
           >
-            <RotateCcw className="w-3.5 h-3.5 text-stone-500" />
+            <RotateCcw className="w-3.5 h-3.5 text-[#a9a1c6]" />
             <span>New Review</span>
           </button>
         </div>
@@ -598,13 +602,13 @@ export function AnalysisView({
           {/* Main Split: Environment Overview & Executive Summary */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             {/* Uploaded Photograph Column with Grounded Visual Annotations */}
-            <div className="lg:col-span-6 bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden p-4 sm:p-5 space-y-4">
+            <div className="lg:col-span-6 bg-[#1e1a33] rounded-2xl border border-[#c3b8e3]/15 shadow-xl overflow-hidden p-4 sm:p-5 space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-stone-900 text-sm flex items-center gap-1.5">
-                  <Compass className="w-4 h-4 text-indigo-600" />
+                <h3 className="font-bold text-[#fdf9f4] text-sm flex items-center gap-2">
+                  <Compass className="w-4 h-4 text-[#e85d63]" />
                   <span>Reviewed Environment</span>
                 </h3>
-                <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-stone-100 text-stone-600 border border-stone-200">
+                <span className="text-[10px] font-mono uppercase tracking-wider font-medium px-2 py-0.5 rounded-full bg-[#141221] text-[#c3b8e3] border border-[#c3b8e3]/20">
                   {isDemo ? "Sample Photo" : "Uploaded Image"}
                 </span>
               </div>
@@ -619,8 +623,8 @@ export function AnalysisView({
               />
 
               {/* Observed Scene Description */}
-              <div className="bg-stone-50 rounded-xl p-3.5 border border-stone-200/70 text-xs text-stone-700 space-y-1">
-                <div className="font-semibold text-stone-900 uppercase tracking-wider text-[10px]">
+              <div className="bg-[#141221] rounded-xl p-4 border border-[#c3b8e3]/15 text-xs text-[#a9a1c6] space-y-1">
+                <div className="font-bold text-[#fdf9f4] uppercase tracking-wider font-mono text-[10px]">
                   Observed Scene Description
                 </div>
                 <p className="leading-relaxed">{analysis.sceneDescription}</p>
@@ -630,35 +634,35 @@ export function AnalysisView({
             {/* Executive Summary & Priority Steps Column */}
             <div className="lg:col-span-6 space-y-6">
               {/* Executive Summary */}
-              <div className="bg-white rounded-2xl border border-stone-200 shadow-2xs p-5 sm:p-6 space-y-3">
+              <div className="bg-[#1e1a33] rounded-2xl border border-[#c3b8e3]/15 shadow-xl p-5 sm:p-6 space-y-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-base font-semibold text-stone-900 flex items-center gap-2">
-                    <FileText className="w-4 h-4 text-indigo-600" />
+                  <h3 className="text-base font-bold text-[#fdf9f4] flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-[#e85d63]" />
                     <span>Executive Accessibility Summary</span>
                   </h3>
-                  <span className="text-xs font-medium text-stone-500">
+                  <span className="text-xs font-mono text-[#a9a1c6]">
                     {analysis.findings.length} findings
                   </span>
                 </div>
-                <p className="text-sm text-stone-700 leading-relaxed">
+                <p className="text-sm text-[#a9a1c6] leading-relaxed">
                   {analysis.overallSummary}
                 </p>
               </div>
 
               {/* Top Recommendations */}
               {analysis.topRecommendations && analysis.topRecommendations.length > 0 && (
-                <div className="bg-white rounded-2xl border border-stone-200 shadow-2xs p-5 sm:p-6 space-y-3.5">
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-900 flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <div className="bg-[#1e1a33] rounded-2xl border border-[#c3b8e3]/15 shadow-xl p-5 sm:p-6 space-y-3.5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider font-mono text-[#fdf9f4] flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-[#6ee7b7]" />
                     <span>Priority Improvement Steps</span>
                   </h3>
                   <ul className="space-y-2.5">
                     {analysis.topRecommendations.map((rec, idx) => (
                       <li
                         key={idx}
-                        className="flex items-start gap-2.5 text-xs sm:text-sm text-stone-700 leading-relaxed bg-stone-50/70 p-3 rounded-xl border border-stone-100"
+                        className="flex items-start gap-3 text-xs sm:text-sm text-[#fdf9f4]/90 leading-relaxed bg-[#141221] p-3.5 rounded-xl border border-[#c3b8e3]/10"
                       >
-                        <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-semibold flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="w-5 h-5 rounded-full bg-[#6ee7b7]/15 text-[#6ee7b7] text-[11px] font-mono font-bold flex items-center justify-center shrink-0 mt-0.5 border border-[#6ee7b7]/30">
                           {idx + 1}
                         </span>
                         <span>{rec}</span>
@@ -669,18 +673,18 @@ export function AnalysisView({
               )}
 
               {/* Reassessment Teaser Banner */}
-              <div className="bg-gradient-to-br from-indigo-50 to-violet-50 rounded-2xl border border-indigo-200/80 p-5 space-y-3">
-                <div className="flex items-center gap-2 text-indigo-900 font-semibold text-sm">
-                  <TrendingUp className="w-4 h-4 text-indigo-600" />
+              <div className="bg-gradient-to-br from-[#1e1a33] to-[#282343] rounded-2xl border border-[#c3b8e3]/20 p-5 space-y-3">
+                <div className="flex items-center gap-2 text-[#fdf9f4] font-bold text-sm">
+                  <TrendingUp className="w-4 h-4 text-[#6ee7b7]" />
                   <span>Closed-Loop Verification</span>
                 </div>
-                <p className="text-xs text-indigo-800 leading-relaxed">
-                  After implementing changes in this space, upload a follow-up photograph in the <strong>Before vs. After</strong> tab to evaluate whether barriers were remediated.
+                <p className="text-xs text-[#a9a1c6] leading-relaxed">
+                  After implementing changes in this space, upload a follow-up photograph in the <strong className="text-[#fdf9f4]">Before vs. After</strong> tab to evaluate whether barriers were remediated.
                 </p>
                 <button
                   type="button"
                   onClick={() => setActiveTab("comparison")}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-indigo-700 bg-white hover:bg-indigo-50 border border-indigo-200 rounded-lg shadow-2xs transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-[#141221] bg-[#e85d63] hover:bg-[#d64b51] rounded-xl shadow-md transition-all cursor-pointer"
                 >
                   <span>Open Before & After Review</span>
                 </button>
@@ -736,13 +740,13 @@ export function AnalysisView({
             onSaveNotes={handleSaveNoteCallback}
           />
 
-          <div className="bg-stone-50 rounded-2xl border border-stone-200 p-5 text-xs text-stone-600 space-y-2">
-            <h4 className="font-semibold text-stone-800">Best Practices for Field Notes</h4>
-            <ul className="list-disc pl-5 space-y-1 text-stone-600">
+          <div className="bg-[#1e1a33] rounded-2xl border border-[#c3b8e3]/15 p-5 text-xs text-[#a9a1c6] space-y-2">
+            <h4 className="font-bold text-[#fdf9f4]">Best Practices for Field Notes</h4>
+            <ul className="list-disc pl-5 space-y-1 text-[#a9a1c6]">
               <li>Record manual tape measurements (doorway clear opening width, stair riser heights, ramp slopes).</li>
               <li>Note ambient conditions like lighting at different times of day or adverse weather effects.</li>
               <li>Document contractor estimates or discussions with property owners.</li>
-              <li>Notes are saved locally to this inspection record in IndexedDB and included in PDF exports.</li>
+              <li>Notes are saved per user to your inspection record and included in PDF exports.</li>
             </ul>
           </div>
         </div>

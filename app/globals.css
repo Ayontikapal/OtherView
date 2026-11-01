@@ -6,8 +6,8 @@
   }
 
   body {
-    background-color: #fafaf9; /* Stone-50 warm neutral */
-    color: #1c1917; /* Stone-900 deep charcoal */
+    background-color: #141221;
+    color: #fdf9f4;
     font-family: var(--font-fallback);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
