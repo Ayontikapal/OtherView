@@ -1,4 +1,4 @@
-import { AccessibilityAnalysis } from "@/types/analysis";
+import { AccessibilityAnalysis } from "../types/analysis";
 
 export const DEMO_ANALYSIS_DATA: AccessibilityAnalysis = {
   sceneDescription:

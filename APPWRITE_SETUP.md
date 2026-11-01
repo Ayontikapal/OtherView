@@ -1,6 +1,6 @@
-# Appwrite Cloud Setup Guide — OtherView V3
+# Appwrite Cloud Setup Guide — OtherView
 
-This guide provides step-by-step instructions for configuring **Appwrite Cloud** as the authentication, relational database (TablesDB), and private file storage engine for OtherView V3.
+This guide provides step-by-step instructions for configuring **Appwrite Cloud** as the authentication, relational database (TablesDB), and private file storage engine for OtherView.
 
 ---
 

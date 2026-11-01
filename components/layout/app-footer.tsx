@@ -16,7 +16,7 @@ export function AppFooter() {
               </div>
               <span className="font-bold text-base text-[#fdf9f4] tracking-tight">OtherView</span>
               <span className="text-[10px] font-mono uppercase tracking-widest text-[#e85d63] bg-[#e85d63]/10 px-2 py-0.5 rounded border border-[#e85d63]/25">
-                Architecture v3
+                AI Platform
               </span>
             </div>
             <p className="text-xs text-[#a9a1c6] leading-relaxed">

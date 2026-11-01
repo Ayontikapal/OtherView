@@ -22,10 +22,10 @@ function assert(condition, message) {
 
 async function runTests() {
   console.log("\n========================================================");
-  console.log("   OTHERVIEW V2 COMPREHENSIVE AUTOMATED TEST SUITE      ");
+  console.log("   OTHERVIEW COMPREHENSIVE AUTOMATED TEST SUITE          ");
   console.log("========================================================\n");
 
-  // TEST GROUP 1: Demo Dataset & V2 Contract Validation
+  // TEST GROUP 1: Demo Dataset & Zod Contract Validation
   console.log("Test Group 1: Demo Dataset & Zod Contract Validation");
   try {
     const parseResult = accessibilityAnalysisSchema.safeParse(DEMO_ANALYSIS_DATA);

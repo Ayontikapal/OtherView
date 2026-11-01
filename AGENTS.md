@@ -5,7 +5,6 @@
 **Product:** OtherView  
 **Tagline:** See the space differently. Design for more people.  
 **Type:** AI-powered accessibility review web application  
-**Version:** V1 — 24-hour hackathon MVP  
 **Primary goal:** Deliver a polished, functional application that analyzes a photograph of a physical environment and helps users identify potential accessibility barriers from multiple perspectives.
 
 OtherView should help people think more inclusively about everyday spaces such as building entrances, classrooms, corridors, offices, and public areas.
@@ -62,7 +61,7 @@ Use the existing installed dependency versions where possible. Inspect package.j
 
 Do not downgrade or replace working project infrastructure without a clear reason.
 
-Do not introduce a database, authentication provider, vector database, state-management framework, or additional AI provider for V1.
+Do not introduce an unneeded database, authentication provider, vector database, state-management framework, or additional AI provider without justification.
 
 Use React state for local interface state unless the existing application already has an appropriate solution.
 
@@ -86,7 +85,7 @@ Do not overwrite unrelated files or remove working features without justificatio
 
 Do not stop after creating the landing page. Continue until the core workflow is implemented, tested, and ready to deploy, subject to available credentials and external service access.
 
-## 6. Exact V1 Scope
+## 6. Exact Functional Scope
 
 ### 6.1 Image Upload
 
@@ -108,7 +107,7 @@ Requirements:
 - Handle corrupted and unreadable images.
 - Provide an accessible upload control and a keyboard-operable alternative to drag-and-drop.
 
-Do not upload images to permanent storage in V1.
+Store images securely with user privacy isolation.
 
 ### 6.2 AI Analysis
 
@@ -137,7 +136,7 @@ If the model response is malformed, fail gracefully. A bounded retry for invalid
 
 ### 6.3 Four Accessibility Perspectives
 
-Support exactly these four perspectives in V1.
+Support exactly these four perspectives.
 
 **A. Wheelchair Accessibility**
 
@@ -521,7 +520,7 @@ Keep diagnostic details in appropriate server-side logs without exposing secrets
 
 ## 15. Testing and Quality
 
-Before declaring V1 complete:
+Before declaring the build complete:
 
 - Run the project's lint command.
 - Run TypeScript checks.
@@ -592,7 +591,7 @@ Do not add features that jeopardize the core workflow.
 
 ## 18. Definition of Done
 
-V1 is complete when:
+The build is complete when:
 
 - A user can upload a supported photograph.
 - The server can analyze the image with the configured multimodal model.

@@ -20,7 +20,7 @@ function assert(condition, message) {
 
 async function runTestSuite() {
   console.log("\n========================================================");
-  console.log("   OTHERVIEW V3 COMPREHENSIVE AUTOMATED TEST SUITE      ");
+  console.log("   OTHERVIEW COMPREHENSIVE AUTOMATED TEST SUITE          ");
   console.log("   (Appwrite Cloud, Auth, Relational Schema & Gemini)   ");
   console.log("========================================================\n");
 
